@@ -70,22 +70,29 @@ const counts = Object.fromEntries(
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div id="gallery-grid" class="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
         {
-          galleryImages.map((img) => (
+          galleryImages.map((img, i) => (
             <figure
               class="gallery-item group relative aspect-square overflow-hidden rounded-xl bg-sand-100"
               data-category={img.category}
             >
-              <img
-                src={img.src}
-                alt={img.alt}
-                width="400"
-                height="400"
-                loading="lazy"
-                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-              />
-              <figcaption class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy-950/80 to-transparent p-2 opacity-0 transition-opacity group-hover:opacity-100">
-                <span class="font-body text-[10px] font-bold uppercase tracking-wide text-white/90">{img.category}</span>
-              </figcaption>
+              <button
+                type="button"
+                class="gallery-open-btn block h-full w-full cursor-zoom-in"
+                data-index={i}
+                aria-label={`View larger photo: ${img.alt}`}
+              >
+                <img
+                  src={img.src}
+                  alt={img.alt}
+                  width="400"
+                  height="400"
+                  loading="lazy"
+                  class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <figcaption class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy-950/80 to-transparent p-2 opacity-0 transition-opacity group-hover:opacity-100">
+                  <span class="font-body text-[10px] font-bold uppercase tracking-wide text-white/90">{img.category}</span>
+                </figcaption>
+              </button>
             </figure>
           ))
         }
@@ -97,6 +104,59 @@ const counts = Object.fromEntries(
     heading="Add Your Catch to the Gallery"
     body="Book a trip with Captain Jason and we will send you home with photos worth bragging about."
   />
+
+  <!-- Lightbox — hidden by default, opened via JS below. Full-screen overlay
+       with prev/next that cycles only through the currently filtered set of
+       thumbnails, not the full unfiltered list. -->
+  <div
+    id="lightbox"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-navy-950/95 p-4 backdrop-blur-sm"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Photo viewer"
+  >
+    <button
+      type="button"
+      id="lightbox-close"
+      aria-label="Close photo viewer"
+      class="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 sm:right-6 sm:top-6"
+    >
+      <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <path d="M5 5l10 10M15 5 5 15" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+      </svg>
+    </button>
+
+    <button
+      type="button"
+      id="lightbox-prev"
+      aria-label="Previous photo"
+      class="absolute left-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 sm:left-6"
+    >
+      <svg class="h-5 w-5" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M10 3 5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </button>
+    <button
+      type="button"
+      id="lightbox-next"
+      aria-label="Next photo"
+      class="absolute right-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 sm:right-6"
+    >
+      <svg class="h-5 w-5" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </button>
+
+    <figure class="flex max-h-full max-w-4xl flex-col items-center">
+      <img
+        id="lightbox-image"
+        src=""
+        alt=""
+        class="max-h-[80vh] w-auto max-w-full rounded-lg object-contain shadow-2xl"
+      />
+      <figcaption id="lightbox-caption" class="mt-4 max-w-xl text-center font-body text-sm text-white/70" />
+    </figure>
+  </div>
 </BaseLayout>
 
 <script>
@@ -115,5 +175,75 @@ const counts = Object.fromEntries(
         item.style.display = show ? '' : 'none';
       });
     });
+  });
+
+  // Lightbox — click a thumbnail to open a larger view, with prev/next that
+  // only cycles through whatever the current category filter has visible.
+  const openButtons = document.querySelectorAll<HTMLButtonElement>('.gallery-open-btn');
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImage = document.getElementById('lightbox-image') as HTMLImageElement | null;
+  const lightboxCaption = document.getElementById('lightbox-caption');
+  const closeBtn = document.getElementById('lightbox-close');
+  const prevBtn = document.getElementById('lightbox-prev');
+  const nextBtn = document.getElementById('lightbox-next');
+
+  let currentIndex = -1;
+
+  function visibleFigures(): HTMLElement[] {
+    return Array.from(items).filter((item) => item.style.display !== 'none');
+  }
+
+  function showAt(index: number) {
+    const visible = visibleFigures();
+    if (visible.length === 0) return;
+    const wrapped = ((index % visible.length) + visible.length) % visible.length;
+    currentIndex = wrapped;
+    const figure = visible[wrapped];
+    const img = figure.querySelector('img');
+    if (!img || !lightboxImage) return;
+    lightboxImage.src = img.src;
+    lightboxImage.alt = img.alt;
+    if (lightboxCaption) lightboxCaption.textContent = img.alt;
+  }
+
+  function open(figure: HTMLElement) {
+    const visible = visibleFigures();
+    const index = visible.indexOf(figure);
+    if (!lightbox) return;
+    lightbox.classList.remove('hidden');
+    lightbox.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+    showAt(index === -1 ? 0 : index);
+  }
+
+  function close() {
+    if (!lightbox) return;
+    lightbox.classList.add('hidden');
+    lightbox.classList.remove('flex');
+    document.body.style.overflow = '';
+    currentIndex = -1;
+  }
+
+  openButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const figure = btn.closest('.gallery-item') as HTMLElement | null;
+      if (figure) open(figure);
+    });
+  });
+
+  closeBtn?.addEventListener('click', close);
+  prevBtn?.addEventListener('click', () => showAt(currentIndex - 1));
+  nextBtn?.addEventListener('click', () => showAt(currentIndex + 1));
+
+  // Click on the dark backdrop (not the image itself) closes the lightbox.
+  lightbox?.addEventListener('click', (e) => {
+    if (e.target === lightbox) close();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (lightbox?.classList.contains('hidden')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') showAt(currentIndex - 1);
+    if (e.key === 'ArrowRight') showAt(currentIndex + 1);
   });
 </script>
