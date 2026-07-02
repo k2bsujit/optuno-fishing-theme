@@ -1,0 +1,255 @@
+---
+import { business } from '../data/site';
+import { services } from '../data/services';
+import { serviceAreas, type ServiceArea } from '../data/serviceAreas';
+import CharterCard from './CharterCard.astro';
+import BookingCta from './BookingCta.astro';
+
+export interface Props {
+  area: ServiceArea;
+}
+
+const { area } = Astro.props;
+const nearbyAreas = area.nearby
+  .map((slug) => serviceAreas.find((a) => a.slug === slug))
+  .filter((a): a is ServiceArea => Boolean(a));
+---
+
+<!-- Hero -->
+<section class="relative flex min-h-[55vh] items-end overflow-hidden bg-navy-950 text-white">
+  <img
+    src={area.heroImage}
+    alt={area.heroImageAlt}
+    width="1600"
+    height="900"
+    loading="eager"
+    class="absolute inset-0 h-full w-full object-cover opacity-60"
+  />
+  <div class="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/50 to-navy-950/10"></div>
+
+  <div class="relative mx-auto w-full max-w-7xl px-4 pb-16 pt-32 sm:px-6 sm:pb-20 lg:px-8">
+    <nav aria-label="Breadcrumb" class="mb-4 flex items-center gap-1.5 font-body text-xs font-bold uppercase tracking-wide text-white/60">
+      <a href="/" class="hover:text-teal-400">Home</a>
+      <span aria-hidden="true">/</span>
+      <a href="/service-areas/" class="hover:text-teal-400">Service Areas</a>
+      <span aria-hidden="true">/</span>
+      <span class="text-white/90">{area.name}</span>
+    </nav>
+    <span class="inline-flex w-fit items-center rounded-full bg-teal-500 px-3 py-1 font-body text-xs font-extrabold uppercase tracking-wide text-navy-950">
+      {area.county}
+    </span>
+    <h1 class="mt-4 max-w-2xl font-display text-4xl font-extrabold uppercase leading-tight sm:text-5xl">
+      {area.h1}
+    </h1>
+    <p class="mt-4 max-w-xl font-body text-base text-white/85 sm:text-lg">
+      {area.lede}
+    </p>
+    <div class="mt-8 flex flex-wrap gap-4">
+      <a
+        href={business.bookingUrl}
+        class="inline-flex items-center justify-center rounded-full bg-ocean-600 px-7 py-3.5 font-body text-sm font-bold text-white transition-colors hover:bg-ocean-500 sm:text-base"
+      >
+        Book A {area.name} Charter
+      </a>
+      <a
+        href={business.phone.href}
+        class="inline-flex items-center justify-center rounded-full border border-white/30 px-7 py-3.5 font-body text-sm font-bold text-white backdrop-blur transition-colors hover:bg-white/10 sm:text-base"
+      >
+        Call {business.phone.display}
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Fast facts (optional) -->
+{
+  area.fastFacts && (
+    <section class="border-b border-navy-950/10 bg-sand-100">
+      <div class="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+        <p class="text-center font-body text-xs font-bold uppercase tracking-wide text-ocean-600">
+          {area.name} Fast Facts
+        </p>
+        <div class="mt-4 grid grid-cols-2 gap-6 sm:grid-cols-3">
+          <div class="text-center">
+            <p class="font-display text-base font-extrabold text-navy-950">{area.fastFacts.county}</p>
+            <p class="mt-1 font-body text-xs uppercase tracking-wide text-navy-950/50">County</p>
+          </div>
+          {area.fastFacts.zipCodes && (
+            <div class="text-center">
+              <p class="font-display text-base font-extrabold text-navy-950">{area.fastFacts.zipCodes}</p>
+              <p class="mt-1 font-body text-xs uppercase tracking-wide text-navy-950/50">ZIP Codes</p>
+            </div>
+          )}
+          <div class="text-center">
+            <p class="font-display text-base font-extrabold text-navy-950">{area.fastFacts.homeDock}</p>
+            <p class="mt-1 font-body text-xs uppercase tracking-wide text-navy-950/50">Home Dock</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<!-- Intro -->
+<section class="py-section-sm sm:py-section">
+  <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+    {
+      area.intro.map((paragraph, i) => (
+        <>
+          <p class="mt-5 font-body text-base leading-relaxed text-navy-950/75 first:mt-0">{paragraph}</p>
+          {i === 0 && area.midImage && (
+            <img
+              src={area.midImage.src}
+              alt={area.midImage.alt}
+              width="1000"
+              height="600"
+              loading="lazy"
+              class="my-8 aspect-video w-full rounded-2xl object-cover"
+            />
+          )}
+        </>
+      ))
+    }
+  </div>
+</section>
+
+<!-- Neighborhoods -->
+<section class="bg-sand-100 py-section-sm sm:py-section">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <div class="text-center">
+      <span class="font-body text-sm font-bold uppercase tracking-wide text-teal-500">Where We Pick You Up</span>
+      <h2 class="mt-2 font-display text-3xl font-extrabold text-navy-950 sm:text-4xl">
+        Our Neighborhoods in {area.name}
+      </h2>
+    </div>
+    <div class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        area.neighborhoods.map((n) => (
+          <div class="rounded-2xl bg-white p-6 shadow-sm">
+            <h3 class="font-display text-base font-extrabold uppercase tracking-wide text-navy-950">{n.title}</h3>
+            <p class="mt-2 font-body text-sm text-navy-950/70">{n.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Local knowledge -->
+<section class="py-section-sm sm:py-section">
+  <div class="mx-auto grid max-w-6xl grid-cols-1 items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
+    <img
+      src={area.localImage.src}
+      alt={area.localImage.alt}
+      width="700"
+      height="560"
+      loading="lazy"
+      class="aspect-[5/4] w-full rounded-2xl object-cover shadow-md lg:order-2"
+    />
+    <div class="lg:order-1">
+      <span class="font-body text-sm font-bold uppercase tracking-wide text-teal-500">Local Knowledge</span>
+      <h2 class="mt-2 font-display text-3xl font-extrabold text-navy-950 sm:text-4xl">{area.uniqueHeading}</h2>
+      {
+        area.uniqueParagraphs.map((p) => (
+          <p class="mt-4 font-body text-sm leading-relaxed text-navy-950/70">{p}</p>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Landmarks -->
+<section class="bg-navy-950 py-section-sm text-white sm:py-section">
+  <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+    <div class="text-center">
+      <span class="font-body text-sm font-bold uppercase tracking-wide text-teal-400">Where We Fish</span>
+      <h2 class="mt-2 font-display text-3xl font-extrabold sm:text-4xl">
+        Key {area.name} Fishing Landmarks
+      </h2>
+    </div>
+    <ul class="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
+      {
+        area.landmarks.map((landmark) => (
+          <li class="flex items-center gap-3 rounded-xl bg-white/5 px-4 py-3">
+            <svg class="h-4 w-4 flex-shrink-0 text-teal-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M9.7 2.3a1 1 0 0 1 1.4 1.4L7.4 7.4a1 1 0 1 1-1.4-1.4l3.7-3.7ZM10 4a6 6 0 1 0 0 12 6 6 0 0 0 0-12Z" clip-rule="evenodd" />
+            </svg>
+            <span class="font-body text-sm font-bold text-white/85">{landmark}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<!-- Trip types -->
+<section class="py-section-sm sm:py-section">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="text-center">
+      <span class="font-body text-sm font-bold uppercase tracking-wide text-teal-500">Trip Types Available</span>
+      <h2 class="mt-2 font-display text-3xl font-extrabold text-navy-950 sm:text-4xl">
+        Fishing Charters We Run for {area.name} Guests
+      </h2>
+    </div>
+    <div class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
+      {
+        services.map((service) => (
+          <CharterCard
+            href={service.href}
+            tag={service.tag}
+            title={`${service.title} for ${area.name} Guests`}
+            description={service.cardDescription}
+            image={service.heroImage}
+            imageAlt={service.heroImageAlt}
+          />
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Nearby areas -->
+<section class="bg-sand-100 py-section-sm sm:py-section">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="text-center">
+      <span class="font-body text-sm font-bold uppercase tracking-wide text-teal-500">We Also Pick Up From</span>
+      <h2 class="mt-2 font-display text-3xl font-extrabold text-navy-950 sm:text-4xl">Nearby Areas We Serve</h2>
+    </div>
+    <div class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
+      {
+        nearbyAreas.map((nearArea) => (
+          <a
+            href={nearArea.href}
+            class="group relative flex min-h-[12rem] overflow-hidden rounded-2xl bg-navy-950 shadow-md transition-all hover:-translate-y-1 hover:shadow-xl"
+          >
+            <img
+              src={nearArea.heroImage}
+              alt={nearArea.heroImageAlt}
+              width="500"
+              height="360"
+              loading="lazy"
+              class="absolute inset-0 h-full w-full object-cover opacity-70 transition-transform duration-500 group-hover:scale-110"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/50 to-transparent" />
+            <div class="relative mt-auto flex w-full flex-col p-5">
+              <h3 class="font-display text-lg font-extrabold uppercase text-white">{nearArea.name}</h3>
+              <p class="mt-1 font-body text-xs text-white/70">{nearArea.county}</p>
+              <span class="mt-3 inline-flex items-center gap-1 font-body text-xs font-extrabold text-teal-400">
+                View {nearArea.name} Charters
+                <svg class="h-3.5 w-3.5" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<BookingCta
+  heading={`Book A ${area.name} Charter`}
+  body="Half, three-quarter, and full-day private trips. We pick the route, the depth, and the species based on the morning conditions."
+  backgroundImage={area.heroImage}
+/>

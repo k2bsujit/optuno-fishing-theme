@@ -1,0 +1,64 @@
+---
+import { business } from '../data/site';
+
+export interface Props {
+  heading?: string;
+  body?: string;
+  /** Override the default FareHarbor URL, e.g. a trip-specific booking link. */
+  bookingUrl?: string;
+  showCallButton?: boolean;
+  /** Optional background photo — bookends the hero treatment on the home page. */
+  backgroundImage?: string;
+  class?: string;
+}
+
+const {
+  heading = 'Ready to Hit the Water?',
+  body = 'We are taking bookings for half-day, three-quarter, and full-day trips out of Fort Lauderdale. Lock in your date.',
+  bookingUrl = business.bookingUrl,
+  showCallButton = true,
+  backgroundImage,
+  class: className = '',
+} = Astro.props;
+---
+
+<section class={`relative overflow-hidden bg-navy-950 py-section-sm text-white sm:py-section ${className}`}>
+  {
+    backgroundImage && (
+      <>
+        <img
+          src={backgroundImage}
+          alt=""
+          aria-hidden="true"
+          width="1600"
+          height="900"
+          loading="lazy"
+          class="absolute inset-0 h-full w-full object-cover opacity-30"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/85 to-navy-950/60" />
+      </>
+    )
+  }
+  <div class="relative mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+    <h2 class="font-display text-3xl font-extrabold sm:text-4xl">{heading}</h2>
+    <p class="mt-4 text-base text-white/80 sm:text-lg">{body}</p>
+    <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+      <a
+        href={bookingUrl}
+        class="inline-flex w-full items-center justify-center rounded-md bg-ocean-600 px-6 py-3 font-body text-base font-bold text-white transition-colors hover:bg-ocean-500 sm:w-auto"
+      >
+        Book A Charter
+      </a>
+      {
+        showCallButton && (
+          <a
+            href={business.phone.href}
+            class="inline-flex w-full items-center justify-center rounded-md border border-white/30 px-6 py-3 font-body text-base font-bold text-white transition-colors hover:bg-white/10 sm:w-auto"
+          >
+            Call {business.phone.display}
+          </a>
+        )
+      }
+    </div>
+  </div>
+</section>

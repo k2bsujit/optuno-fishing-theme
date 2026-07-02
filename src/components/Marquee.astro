@@ -1,0 +1,72 @@
+---
+// Seamless-loop horizontal marquee (trust bar text, sponsor/press logos).
+// Renders the slotted content twice back to back and animates -50% so the
+// loop point is invisible. Pauses on hover and under reduced-motion.
+//
+// Written with plain scoped CSS (not Tailwind arbitrary-value utilities) so
+// the animation doesn't depend on the Tailwind JIT parsing a complex
+// arbitrary mask-image/animation-play-state class correctly.
+export interface Props {
+  speed?: 'normal' | 'slow';
+  class?: string;
+}
+
+const { speed = 'normal', class: className = '' } = Astro.props;
+const duration = speed === 'slow' ? '50s' : '30s';
+---
+
+<div class={`marquee-viewport ${className}`}>
+  <div class="marquee-track" style={`animation-duration: ${duration};`}>
+    <div class="marquee-group">
+      <slot />
+    </div>
+    <div class="marquee-group" aria-hidden="true">
+      <slot />
+    </div>
+  </div>
+</div>
+
+<style>
+  .marquee-viewport {
+    position: relative;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation-name: marquee-scroll;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+
+  .marquee-group {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 3rem;
+    padding-right: 3rem;
+  }
+
+  .marquee-viewport:hover .marquee-track,
+  .marquee-viewport:focus-within .marquee-track {
+    animation-play-state: paused;
+  }
+
+  @keyframes marquee-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      animation: none;
+    }
+  }
+</style>

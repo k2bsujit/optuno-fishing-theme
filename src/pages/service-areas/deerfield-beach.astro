@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ServiceAreaLayout from '../../components/ServiceAreaLayout.astro';
+import { serviceAreas } from '../../data/serviceAreas';
+
+const area = serviceAreas.find((a) => a.slug === 'deerfield-beach')!;
+---
+
+<BaseLayout title={area.metaTitle} description={area.metaDescription}>
+  <ServiceAreaLayout area={area} />
+</BaseLayout>

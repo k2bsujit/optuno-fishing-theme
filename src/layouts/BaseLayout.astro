@@ -1,0 +1,104 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import MobileStickyCta from '../components/MobileStickyCta.astro';
+import { business, assets } from '../data/site';
+
+export interface Props {
+  title: string;
+  description: string;
+  /** Absolute path, e.g. "/services/offshore-fishing/" — used for canonical + OG url. */
+  path?: string;
+  ogImage?: string;
+}
+
+const {
+  title,
+  description,
+  path = Astro.url.pathname,
+  ogImage = assets.ogDefault,
+} = Astro.props;
+
+const canonicalUrl = new URL(path, Astro.site).toString();
+// ogImage is a local /images/... path by default, but a page could pass an
+// absolute URL — only resolve relative paths against Astro.site.
+const ogImageUrl = /^https?:\/\//.test(ogImage) ? ogImage : new URL(ogImage, Astro.site).toString();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Local business geo -->
+    <meta name="geo.region" content="US-FL" />
+    <meta name="geo.placename" content="Fort Lauderdale, FL" />
+    <meta name="geo.position" content={`${business.geo.lat};${business.geo.lng}`} />
+    <meta name="ICBM" content={`${business.geo.lat}, ${business.geo.lng}`} />
+
+    <!-- Open Graph -->
+    <meta property="og:site_name" content={business.name} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <meta name="generator" content={Astro.generator} />
+  </head>
+  <body class="flex min-h-screen flex-col bg-white font-body text-navy-950 antialiased">
+    <Header />
+    <main class="flex-1 pb-16 lg:pb-0">
+      <slot />
+    </main>
+    <Footer />
+    <MobileStickyCta />
+  </body>
+</html>
+
+<style is:global>
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  :focus-visible {
+    outline: 2px solid theme('colors.teal.500');
+    outline-offset: 2px;
+  }
+</style>

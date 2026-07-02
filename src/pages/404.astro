@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { business } from '../data/site';
+---
+
+<BaseLayout
+  title="Page Not Found | Cool Runnings Sportfishing Charters"
+  description="The page you're looking for isn't here. Head back to Cool Runnings Sportfishing Charters to book a Fort Lauderdale fishing trip."
+>
+  <section class="flex min-h-[70vh] flex-col items-center justify-center bg-navy-950 px-4 text-center text-white">
+    <span class="font-display text-6xl font-extrabold text-teal-400 sm:text-7xl">404</span>
+    <h1 class="mt-4 font-display text-2xl font-extrabold sm:text-3xl">
+      Looks Like This One Got Away
+    </h1>
+    <p class="mt-4 max-w-md font-body text-sm text-white/70 sm:text-base">
+      The page you're looking for doesn't exist. Head back to the home page, or call to book
+      your Fort Lauderdale fishing charter directly.
+    </p>
+    <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+      <a
+        href="/"
+        class="inline-flex items-center justify-center rounded-full bg-ocean-600 px-7 py-3.5 font-body text-sm font-bold text-white transition-colors hover:bg-ocean-500"
+      >
+        Back to Home
+      </a>
+      <a
+        href={business.phone.href}
+        class="inline-flex items-center justify-center rounded-full border border-white/30 px-7 py-3.5 font-body text-sm font-bold text-white backdrop-blur transition-colors hover:bg-white/10"
+      >
+        Call {business.phone.display}
+      </a>
+    </div>
+  </section>
+</BaseLayout>

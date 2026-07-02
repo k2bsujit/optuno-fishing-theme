@@ -1,0 +1,289 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BookingCta from '../components/BookingCta.astro';
+import { business } from '../data/site';
+
+// /about/ — Captain Jason's bio page. Content sourced from
+// https://www.fishcoolrunnings.com/about/ (fetched live), restructured into a
+// modern split-hero + stat-timeline layout distinct from the reference site's
+// stacked-section design.
+
+const atAGlance = [
+  { label: 'Years running charters', value: '10+' },
+  { label: 'Home dock', value: 'Cox Landing' },
+  { label: 'Guest max per trip', value: '4 (2–3 ideal)' },
+  { label: 'Google rating', value: '5.0 · 69 reviews' },
+];
+
+const credentials = [
+  'South Florida native',
+  'Over a decade running sportfishing charters',
+  'Featured on Bass2Billfish with Peter Miller',
+  'Multiple world-renowned tournament placements and wins',
+  'Bahamas + Caribbean fishing experience',
+];
+
+const personalBests = [
+  { value: '53 lb*', label: 'Largest King' },
+  { value: '28 lb', label: 'Largest Mahi' },
+  { value: '28 lb', label: 'Largest Blackfin Tuna' },
+  { value: '38 lb', label: 'Largest Wahoo' },
+  { value: '8', label: 'Most Sailfish (one trip)' },
+];
+
+const boatSpecs = [
+  { title: '32 ft Contender ST', body: 'Open cockpit, T-top, fishable layout' },
+  { title: 'Twin Yamaha 300s', body: 'Quick, fuel-efficient outboards' },
+  { title: 'Rhodan trolling motor', body: 'GPS spot-lock for skinny-water work' },
+  { title: 'GPS, fishfinder, radar', body: 'Full electronics suite for any pattern' },
+  { title: 'Coast Guard safety gear', body: 'Life jackets, EPIRB, comms onboard' },
+  { title: 'Rods, reels, bait, ice', body: 'Plus your Florida saltwater license' },
+];
+
+const tournamentStats = [
+  {
+    value: '8 yrs',
+    label: 'Competing',
+    body: 'Captain Jason has competed, placed, and won in several world-renowned tournaments over the last 8 years out of South Florida.',
+  },
+  {
+    value: 'TV',
+    label: 'Featured',
+    body: 'Featured on multiple fishing television shows including Bass2Billfish with Peter Miller. Plus deep experience fishing the Bahamas and the Caribbean.',
+  },
+  {
+    value: '45 lb',
+    label: 'Boat Record',
+    body: 'Largest kingfish ever boated on Cool Runnings is a 45 lb smoker king — one of the trophy fights that put this charter on the map.',
+  },
+  {
+    value: '2–3',
+    label: 'Ideal Party Size',
+    body: 'Trips capped at four guests. Two to three is the sweet spot — everyone gets real rod time when the bite hits, no waiting in line for a turn.',
+  },
+];
+---
+
+<BaseLayout
+  title="About Captain Jason Robinson | Cool Runnings Sportfishing"
+  description="Captain Jason Robinson runs Cool Runnings Sportfishing Charters out of Fort Lauderdale. South Florida native, tournament-tested, featured on Bass2Billfish."
+>
+  <!-- Split hero -->
+  <section class="relative overflow-hidden bg-navy-950 text-white">
+    <div class="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-28">
+      <div class="order-2 lg:order-1">
+        <nav aria-label="Breadcrumb" class="mb-4 flex items-center gap-1.5 font-body text-xs font-bold uppercase tracking-wide text-white/60">
+          <a href="/" class="hover:text-teal-400">Home</a>
+          <span aria-hidden="true">/</span>
+          <span class="text-white/90">About the Captain</span>
+        </nav>
+        <span class="inline-flex w-fit items-center rounded-full bg-teal-500 px-3 py-1 font-body text-xs font-extrabold uppercase tracking-wide text-navy-950">
+          Owner &amp; Captain
+        </span>
+        <h1 class="mt-4 font-display text-4xl font-extrabold leading-tight sm:text-5xl">
+          About Captain Jason Robinson
+        </h1>
+        <p class="mt-4 max-w-xl font-body text-base text-white/85 sm:text-lg">
+          South Florida native. Tournament-tested. Featured on Bass2Billfish. The captain you
+          actually get on the boat every trip.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a
+            href={business.bookingUrl}
+            class="inline-flex items-center justify-center rounded-full bg-ocean-600 px-7 py-3.5 font-body text-sm font-bold text-white transition-colors hover:bg-ocean-500 sm:text-base"
+          >
+            Book A Charter
+          </a>
+          <a
+            href={business.phone.href}
+            class="inline-flex items-center justify-center rounded-full border border-white/30 px-7 py-3.5 font-body text-sm font-bold text-white backdrop-blur transition-colors hover:bg-white/10 sm:text-base"
+          >
+            Call {business.phone.display}
+          </a>
+        </div>
+      </div>
+      <div class="order-1 lg:order-2">
+        <img
+          src="/images/staff/captain-jason-robinson.webp"
+          alt="Captain Jason Robinson, owner of Cool Runnings Sportfishing Charters in Fort Lauderdale"
+          width="700"
+          height="860"
+          loading="eager"
+          class="aspect-[4/5] w-full rounded-2xl object-cover shadow-2xl"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- At a glance stat bar -->
+  <section class="border-b border-navy-950/10 bg-sand-100">
+    <div class="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-10 sm:px-6 lg:grid-cols-4 lg:px-8">
+      {
+        atAGlance.map((stat) => (
+          <div class="text-center">
+            <p class="font-display text-2xl font-extrabold text-navy-950 sm:text-3xl">{stat.value}</p>
+            <p class="mt-1 font-body text-xs font-bold uppercase tracking-wide text-navy-950/60">
+              {stat.label}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Story + credentials timeline -->
+  <section class="py-section-sm sm:py-section">
+    <div class="mx-auto grid max-w-6xl grid-cols-1 gap-12 px-4 sm:px-6 lg:grid-cols-5 lg:px-8">
+      <div class="lg:col-span-3">
+        <span class="font-body text-sm font-bold uppercase tracking-wide text-teal-500">The Story</span>
+        <h2 class="mt-2 font-display text-3xl font-extrabold text-navy-950 sm:text-4xl">
+          A Lifetime on South Florida Water
+        </h2>
+        <p class="mt-5 font-body text-base leading-relaxed text-navy-950/75">
+          Captain Jason Robinson is a South Florida native with a lifetime of fishing experience
+          both inshore and offshore. Growing up in the Miami area has given Jason the opportunity
+          to fish for everything from tarpon in the bay to billfish on the edge. The passion and
+          love he has for fishing shows from the second you step on board.
+        </p>
+        <p class="mt-4 font-body text-base leading-relaxed text-navy-950/75">
+          In the last 8 years, he has competed, placed, and won several world renowned tournaments.
+          Captain Jason has been featured on multiple fishing television shows including
+          "Bass2billfish" with Peter Miller. He also has knowledge fishing all over the Bahamas and
+          the Caribbean.
+        </p>
+        <p class="mt-4 font-body text-base leading-relaxed text-navy-950/75">
+          A day with Jason can range from giving children or beginners their first South Florida
+          experience to challenging even the most experienced anglers. He's willing to go the extra
+          mile to make your next fishing experience a memory that will last a lifetime.
+        </p>
+        <p class="mt-4 font-body text-sm text-navy-950/60">
+          We fish everything the Atlantic and the Intracoastal hand us — browse our trip types:
+        </p>
+        <div class="mt-4 flex flex-wrap gap-3">
+          <a href="/services/offshore-fishing/" class="rounded-full bg-navy-950 px-4 py-2 font-body text-sm font-bold text-white transition-colors hover:bg-navy-900">
+            Offshore Charters
+          </a>
+          <a href="/services/inshore-fishing/" class="rounded-full bg-navy-950 px-4 py-2 font-body text-sm font-bold text-white transition-colors hover:bg-navy-900">
+            Inshore Charters
+          </a>
+          <a href="/services/bottom-fishing/" class="rounded-full bg-navy-950 px-4 py-2 font-body text-sm font-bold text-white transition-colors hover:bg-navy-900">
+            Bottom Fishing
+          </a>
+        </div>
+      </div>
+
+      <div class="lg:col-span-2">
+        <span class="font-body text-sm font-bold uppercase tracking-wide text-teal-500">What's On the Resume</span>
+        <h3 class="mt-2 font-display text-xl font-extrabold text-navy-950">Credentials</h3>
+        <ol class="mt-6 space-y-5 border-l-2 border-sand-100 pl-6">
+          {
+            credentials.map((item, i) => (
+              <li class="relative">
+                <span class="absolute -left-[1.95rem] flex h-6 w-6 items-center justify-center rounded-full bg-teal-500 font-display text-xs font-extrabold text-navy-950">
+                  {i + 1}
+                </span>
+                <p class="font-body text-sm font-bold text-navy-950/80">{item}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- Personal bests -->
+  <section class="bg-navy-950 py-section-sm text-white sm:py-section">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <span class="font-body text-sm font-bold uppercase tracking-wide text-teal-400">On the Boat</span>
+        <h2 class="mt-2 font-display text-3xl font-extrabold sm:text-4xl">Personal Bests</h2>
+      </div>
+      <div class="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-5">
+        {
+          personalBests.map((pb) => (
+            <div class="rounded-2xl bg-white/5 p-5 text-center">
+              <p class="font-display text-2xl font-extrabold text-teal-400 sm:text-3xl">{pb.value}</p>
+              <p class="mt-1 font-body text-xs font-bold text-white/70">{pb.label}</p>
+            </div>
+          ))
+        }
+      </div>
+      <p class="mt-4 text-center font-body text-xs text-white/40">* Unofficial weight.</p>
+    </div>
+  </section>
+
+  <!-- The boat -->
+  <section class="py-section-sm sm:py-section">
+    <div class="mx-auto grid max-w-6xl grid-cols-1 items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
+      <img
+        src="/images/gallery/boat/boat-11.webp"
+        alt="The Cool Runnings 32 ft Contender at Cox Landing"
+        width="700"
+        height="560"
+        loading="lazy"
+        class="aspect-[5/4] w-full rounded-2xl object-cover shadow-md"
+      />
+      <div>
+        <span class="font-body text-sm font-bold uppercase tracking-wide text-teal-500">The Boat</span>
+        <h2 class="mt-2 font-display text-3xl font-extrabold text-navy-950 sm:text-4xl">
+          Cool Runnings · 32 ft Contender
+        </h2>
+        <p class="mt-4 font-body text-base text-navy-950/70">
+          Wide, dry, and quick. The 32 ft Contender is rigged for offshore pelagics, reef and wreck
+          drops, and skinny-water inshore work. Twin Yamaha 300s get us to the Gulf Stream in under
+          twenty minutes from the home dock at Cox Landing.
+        </p>
+        <ul class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {
+            boatSpecs.map((spec) => (
+              <li class="rounded-xl bg-sand-100 p-4">
+                <p class="font-display text-sm font-extrabold text-navy-950">{spec.title}</p>
+                <p class="mt-1 font-body text-xs text-navy-950/60">{spec.body}</p>
+              </li>
+            ))
+          }
+        </ul>
+        <a href="/charter-info/" class="mt-6 inline-flex items-center gap-1 font-body text-sm font-extrabold text-ocean-600">
+          See everything included on every trip
+          <svg class="h-4 w-4" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tournament side -->
+  <section class="bg-sand-100 py-section-sm sm:py-section">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <span class="font-body text-sm font-bold uppercase tracking-wide text-teal-500">The Tournament Side</span>
+        <h2 class="mt-2 font-display text-3xl font-extrabold text-navy-950 sm:text-4xl">
+          Placements, Wins, and TV Time
+        </h2>
+        <p class="mx-auto mt-3 max-w-xl font-body text-sm text-navy-950/60">
+          The same tournament-level boat handling on a private four-person charter. That
+          experience shows up in the spread, the reads, and how fast we react when the bite turns
+          on.
+        </p>
+      </div>
+      <div class="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          tournamentStats.map((stat) => (
+            <div class="rounded-2xl bg-white p-6 shadow-sm">
+              <p class="font-display text-2xl font-extrabold text-ocean-600">{stat.value}</p>
+              <p class="mt-1 font-display text-sm font-extrabold text-navy-950">{stat.label}</p>
+              <p class="mt-2 font-body text-xs leading-relaxed text-navy-950/60">{stat.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <BookingCta
+    heading="Ready to Fish with Captain Jason?"
+    body="Lock in your half-day, three-quarter, or full-day trip out of Fort Lauderdale."
+    backgroundImage="/images/gallery/boat/boat-11.webp"
+  />
+</BaseLayout>

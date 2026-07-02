@@ -1,0 +1,158 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BookingCta from '../../components/BookingCta.astro';
+import CharterCard from '../../components/CharterCard.astro';
+import { business } from '../../data/site';
+import { services } from '../../data/services';
+
+// Full build (Phase 3), matching https://www.fishcoolrunnings.com/services/
+// content, with the same modernized structure as the rest of the rebuild.
+
+const included = [
+  {
+    title: 'Rods, Reels & Tackle',
+    body: "Top-of-the-line gear matched to the day's target species and conditions.",
+  },
+  {
+    title: 'Live Bait & Lures',
+    body: 'Fresh-caught bait selected at the dock that morning, plus a full lure spread.',
+  },
+  {
+    title: 'Florida Fishing Licenses',
+    body: "Every angler is covered under the captain's saltwater charter license.",
+  },
+  {
+    title: 'Ice & Coolers',
+    body: 'Iced coolers ready to keep your catch cold from rail to ride home.',
+  },
+  {
+    title: 'USCG Safety Gear',
+    body: 'Coast Guard-required life jackets, flares, radios, and first aid on board.',
+  },
+  {
+    title: 'Catch Cleaning & Bagging',
+    body: 'Every keeper fish cleaned, filleted, and bagged dockside at the end of the trip.',
+  },
+];
+---
+
+<BaseLayout
+  title="Fishing Charter Types in Fort Lauderdale | Inshore, Offshore, Bottom"
+  description="Three types of Fort Lauderdale fishing charters. Inshore for snook and tarpon, offshore for mahi and sailfish, bottom for snapper and grouper. Book your trip."
+>
+  <!-- Hero -->
+  <section class="relative flex min-h-[50vh] items-end overflow-hidden bg-navy-950 text-white">
+    <img
+      src="/images/hero-services-hub.webp"
+      alt="Cool Runnings 32 ft Contender heading offshore for a Fort Lauderdale fishing charter"
+      width="1600"
+      height="900"
+      loading="eager"
+      class="absolute inset-0 h-full w-full object-cover opacity-60"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/50 to-navy-950/10"></div>
+
+    <div class="relative mx-auto w-full max-w-7xl px-4 pb-16 pt-32 sm:px-6 sm:pb-20 lg:px-8">
+      <nav aria-label="Breadcrumb" class="mb-4 flex items-center gap-1.5 font-body text-xs font-bold uppercase tracking-wide text-white/60">
+        <a href="/" class="hover:text-teal-400">Home</a>
+        <span aria-hidden="true">/</span>
+        <span class="text-white/90">Fishing Charters</span>
+      </nav>
+      <span class="inline-flex w-fit items-center rounded-full bg-teal-500 px-3 py-1 font-body text-xs font-extrabold uppercase tracking-wide text-navy-950">
+        Three Trip Types · One 32 Ft Contender
+      </span>
+      <h1 class="mt-4 max-w-2xl font-display text-4xl font-extrabold leading-tight sm:text-5xl">
+        Our Fishing Charters
+      </h1>
+      <p class="mt-4 max-w-xl font-body text-base text-white/85 sm:text-lg">
+        Inshore for snook and tarpon. Offshore for mahi and sailfish. Bottom for snapper and
+        grouper. We run all three out of our Cox Landing home dock.
+      </p>
+    </div>
+  </section>
+
+  <!-- Intro -->
+  <section class="py-section-sm sm:py-section">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <p class="font-body text-base leading-relaxed text-navy-950/75">
+        Cool Runnings Sportfishing runs three distinct fishing charters out of Fort Lauderdale, all
+        aboard the same 32 ft Contender with twin Yamaha 300 outboards. The boat is rigged for
+        everything from a quiet morning of inshore fishing with kids on the rail to a hard offshore
+        run for tournament-caliber sailfish on the Gulf Stream edge.
+      </p>
+      <p class="mt-5 font-body text-base leading-relaxed text-navy-950/75">
+        We pick the right trip for the day based on weather, season, what is biting, and the
+        experience level of your group. First-time anglers usually do best on inshore or bottom
+        trips where the action stays steady. Anglers chasing trophies head straight to the offshore
+        Gulf Stream charter. Families who want a cooler full of fillets pick bottom fishing on the
+        reefs. Pick the trip that fits and call to lock in a date.
+      </p>
+    </div>
+  </section>
+
+  <!-- Pick your trip -->
+  <section class="bg-sand-100 py-section-sm sm:py-section">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <span class="font-body text-sm font-bold uppercase tracking-wide text-teal-500">
+          Pick Your Trip Type
+        </span>
+        <h2 class="mt-2 font-display text-3xl font-extrabold text-navy-950 sm:text-4xl">
+          Three Ways to Fish
+        </h2>
+      </div>
+      <div class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          services.map((service) => (
+            <CharterCard
+              href={service.href}
+              tag={service.tag}
+              title={service.title}
+              description={service.cardDescription}
+              image={service.heroImage}
+              imageAlt={service.heroImageAlt}
+              species={service.species}
+              ctaLabel="Learn More"
+            />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- What's included -->
+  <section class="py-section-sm sm:py-section">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <span class="font-body text-sm font-bold uppercase tracking-wide text-teal-500">
+          The Full Package
+        </span>
+        <h2 class="mt-2 font-display text-3xl font-extrabold text-navy-950 sm:text-4xl">
+          What's Included on Every Trip
+        </h2>
+        <p class="mx-auto mt-3 max-w-xl font-body text-sm text-navy-950/60">
+          You bring the sun protection, snacks, and a camera. We handle the rest of the fishing
+          day from rods to fillets.
+        </p>
+      </div>
+      <div class="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          included.map((item) => (
+            <div class="rounded-2xl bg-sand-100 p-6">
+              <svg class="h-6 w-6 text-ocean-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M16.7 5.3a1 1 0 0 1 0 1.4l-7 7a1 1 0 0 1-1.4 0l-3-3a1 1 0 1 1 1.4-1.4l2.3 2.3 6.3-6.3a1 1 0 0 1 1.4 0Z" clip-rule="evenodd" />
+              </svg>
+              <h3 class="mt-3 font-display text-base font-extrabold text-navy-950">{item.title}</h3>
+              <p class="mt-1 font-body text-sm text-navy-950/70">{item.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <BookingCta
+    heading="Ready to Pick Your Trip?"
+    body="We will help you pick the right trip for your group, the season, and the conditions. Half-day, three-quarter, and full-day options."
+  />
+</BaseLayout>

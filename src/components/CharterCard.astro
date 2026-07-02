@@ -1,0 +1,73 @@
+---
+export interface Props {
+  href: string;
+  tag: string;
+  title: string;
+  description: string;
+  image: string;
+  imageAlt: string;
+  /** Larger bento-style card — used for the headline trip in a 3-card grid. */
+  featured?: boolean;
+  /** Optional quick species chips (used on the /services/ index cards). */
+  species?: string[];
+  ctaLabel?: string;
+}
+
+const {
+  href,
+  tag,
+  title,
+  description,
+  image,
+  imageAlt,
+  featured = false,
+  species,
+  ctaLabel = 'See the Trip',
+} = Astro.props;
+---
+
+<a
+  href={href}
+  class={`group relative flex overflow-hidden rounded-2xl bg-navy-950 shadow-md transition-all hover:-translate-y-1 hover:shadow-xl ${
+    featured ? 'sm:col-span-2 min-h-[20rem] sm:min-h-[22rem]' : 'min-h-[16rem]'
+  }`}
+>
+  <img
+    src={image}
+    alt={imageAlt}
+    width="640"
+    height="480"
+    loading="lazy"
+    class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+  />
+  <div class="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/40 to-transparent"></div>
+
+  <div class="relative mt-auto flex w-full flex-col p-6">
+    <span class="inline-flex w-fit items-center rounded-full bg-teal-500 px-3 py-1 font-body text-xs font-extrabold uppercase tracking-wide text-navy-950">
+      {tag}
+    </span>
+    <h3 class={`mt-3 font-display font-extrabold text-white ${featured ? 'text-2xl sm:text-3xl' : 'text-xl'}`}>
+      {title}
+    </h3>
+    <p class={`mt-2 text-white/80 font-body ${featured ? 'max-w-md text-sm sm:text-base' : 'text-sm'}`}>
+      {description}
+    </p>
+    {
+      species && species.length > 0 && (
+        <div class="mt-3 flex flex-wrap gap-1.5">
+          {species.map((s) => (
+            <span class="rounded-full bg-white/10 px-2.5 py-1 font-body text-xs font-bold text-white/80">
+              {s}
+            </span>
+          ))}
+        </div>
+      )
+    }
+    <span class="mt-4 inline-flex items-center gap-1 font-body text-sm font-extrabold text-teal-400">
+      {ctaLabel}
+      <svg class="h-4 w-4 transition-transform group-hover:translate-x-1" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </span>
+  </div>
+</a>

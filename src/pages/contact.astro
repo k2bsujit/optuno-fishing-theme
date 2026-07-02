@@ -1,0 +1,359 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
+import { business, socialIcons } from '../data/site';
+import { services } from '../data/services';
+
+// Phase 4 — full build, matching real content from
+// https://www.fishcoolrunnings.com/contact/, but a deliberately different,
+// more modern layout: an info-dense split hero instead of a photo hero,
+// a real (mock-submit) contact form, and a lighter card-based structure
+// rather than a literal copy of the reference page.
+
+const mapQuery = encodeURIComponent(business.address.full);
+const mapEmbedUrl = `https://www.google.com/maps?q=${mapQuery}&output=embed`;
+const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${mapQuery}`;
+---
+
+<BaseLayout
+  title="Contact Cool Runnings Sportfishing | Book Your Fort Lauderdale Charter"
+  description="Call Captain Jason at 954-588-0578 or use the form to book your Fort Lauderdale fishing charter. Inshore, offshore, bottom fishing."
+>
+  <!-- Hero — info-dense split, no photo, distinct from the rest of the site -->
+  <section class="relative overflow-hidden bg-navy-950 text-white">
+    <div class="pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full bg-teal-500/10 blur-3xl"></div>
+    <div class="pointer-events-none absolute -bottom-32 left-0 h-80 w-80 rounded-full bg-ocean-600/20 blur-3xl"></div>
+
+    <div class="relative mx-auto grid max-w-7xl grid-cols-1 gap-12 px-4 py-20 sm:px-6 sm:py-28 lg:grid-cols-[3fr_2fr] lg:px-8">
+      <div>
+        <span class="inline-flex items-center rounded-full bg-teal-500 px-3 py-1 font-body text-xs font-extrabold uppercase tracking-wide text-navy-950">
+          Book Your Trip
+        </span>
+        <h1 class="mt-5 max-w-lg font-display text-4xl font-extrabold leading-tight sm:text-5xl">
+          Let's Get You On the Water
+        </h1>
+        <p class="mt-5 max-w-md font-body text-base text-white/80 sm:text-lg">
+          Call Captain Jason directly or send the form below. He responds personally, usually
+          within a few hours.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a
+            href={business.phone.href}
+            class="inline-flex items-center justify-center rounded-full bg-ocean-600 px-7 py-3.5 font-body text-sm font-bold text-white transition-colors hover:bg-ocean-500 sm:text-base"
+          >
+            Call {business.phone.display}
+          </a>
+          <a
+            href="#contact-form"
+            class="inline-flex items-center justify-center rounded-full border border-white/30 px-7 py-3.5 font-body text-sm font-bold text-white backdrop-blur transition-colors hover:bg-white/10 sm:text-base"
+          >
+            Send a Message
+          </a>
+        </div>
+      </div>
+
+      <!-- Floating quick-contact card -->
+      <div class="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur sm:p-8">
+        <dl class="space-y-5">
+          <div class="flex items-start gap-4">
+            <span class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-teal-500/20 text-teal-400">
+              <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M4 3.5c0-.8.7-1.5 1.5-1.5H7l1.5 4-1.3 1.3a9.5 9.5 0 0 0 6 6l1.3-1.3 4 1.5v1.5c0 .8-.7 1.5-1.5 1.5C9.4 16.5 3.5 10.6 3.5 3.5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" />
+              </svg>
+            </span>
+            <div>
+              <dt class="font-body text-xs font-bold uppercase tracking-wide text-white/50">Call or Text</dt>
+              <dd><a href={business.phone.href} class="font-display text-lg font-extrabold text-white hover:text-teal-400">{business.phone.display}</a></dd>
+              <p class="mt-0.5 font-body text-xs text-white/50">Direct line to Captain Jason.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <span class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-teal-500/20 text-teal-400">
+              <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M2.5 5.5h15v9a1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1v-9Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" />
+                <path d="M2.8 5.8l7.2 5.5 7.2-5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+            <div>
+              <dt class="font-body text-xs font-bold uppercase tracking-wide text-white/50">Email</dt>
+              <dd><a href={`mailto:${business.email}`} class="font-display text-base font-extrabold text-white hover:text-teal-400 break-all">{business.email}</a></dd>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <span class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-teal-500/20 text-teal-400">
+              <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path d="M10 1.5c-3.6 0-6.5 2.9-6.5 6.5 0 4.9 6.5 10.5 6.5 10.5s6.5-5.6 6.5-10.5c0-3.6-2.9-6.5-6.5-6.5Zm0 9a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z" />
+              </svg>
+            </span>
+            <div>
+              <dt class="font-body text-xs font-bold uppercase tracking-wide text-white/50">Home Dock</dt>
+              <dd class="font-display text-base font-extrabold text-white">{business.homeDock}</dd>
+              <p class="mt-0.5 font-body text-xs text-white/50">Exact dock confirmed when you book.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <span class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-teal-500/20 text-teal-400">
+              <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <circle cx="10" cy="10" r="7.5" stroke="currentColor" stroke-width="1.4" />
+                <path d="M10 6v4l3 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+            <div>
+              <dt class="font-body text-xs font-bold uppercase tracking-wide text-white/50">Hours</dt>
+              <dd class="font-display text-base font-extrabold text-white">{business.hours.days}</dd>
+              <p class="mt-0.5 font-body text-xs text-white/50">{business.hours.time}</p>
+            </div>
+          </div>
+        </dl>
+
+        <div class="mt-6 flex gap-3 border-t border-white/10 pt-6">
+          {
+            socialIcons.map((social) => (
+              <a
+                href={social.href}
+                aria-label={social.label}
+                title={social.label}
+                rel="noopener noreferrer"
+                target="_blank"
+                class="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/80 transition-colors hover:bg-teal-500 hover:text-navy-950"
+              >
+                <svg viewBox="0 0 16 16" class="h-4 w-4 fill-current" aria-hidden="true">
+                  <path d={social.icon} />
+                </svg>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Form + booking sidebar -->
+  <section id="contact-form" class="py-section-sm sm:py-section">
+    <div class="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-4 sm:px-6 lg:grid-cols-[3fr_2fr] lg:px-8">
+      <!-- Contact form -->
+      <div>
+        <span class="font-body text-sm font-bold uppercase tracking-wide text-teal-500">Get In Touch</span>
+        <h2 class="mt-2 font-display text-3xl font-extrabold text-navy-950 sm:text-4xl">Send a Message</h2>
+        <p class="mt-3 max-w-md font-body text-sm text-navy-950/60">
+          Tell us the trip you're after and we'll follow up to lock in a date. For same-day
+          bookings, calling is fastest.
+        </p>
+
+        <form id="contact-form-el" class="mt-8 space-y-5" novalidate>
+          <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+            <div>
+              <label for="name" class="mb-1.5 block font-body text-sm font-bold text-navy-950">Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                autocomplete="name"
+                class="w-full rounded-lg border border-navy-950/15 bg-white px-4 py-3 font-body text-sm text-navy-950 outline-none transition-colors focus:border-ocean-600"
+              />
+            </div>
+            <div>
+              <label for="phone" class="mb-1.5 block font-body text-sm font-bold text-navy-950">Phone</label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                required
+                autocomplete="tel"
+                class="w-full rounded-lg border border-navy-950/15 bg-white px-4 py-3 font-body text-sm text-navy-950 outline-none transition-colors focus:border-ocean-600"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label for="email" class="mb-1.5 block font-body text-sm font-bold text-navy-950">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              autocomplete="email"
+              class="w-full rounded-lg border border-navy-950/15 bg-white px-4 py-3 font-body text-sm text-navy-950 outline-none transition-colors focus:border-ocean-600"
+            />
+          </div>
+
+          <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+            <div>
+              <label for="trip" class="mb-1.5 block font-body text-sm font-bold text-navy-950">Trip Type</label>
+              <select
+                id="trip"
+                name="trip"
+                class="w-full rounded-lg border border-navy-950/15 bg-white px-4 py-3 font-body text-sm text-navy-950 outline-none transition-colors focus:border-ocean-600"
+              >
+                <option value="">Not sure yet</option>
+                {services.map((s) => <option value={s.slug}>{s.title}</option>)}
+              </select>
+            </div>
+            <div>
+              <label for="date" class="mb-1.5 block font-body text-sm font-bold text-navy-950">Preferred Date</label>
+              <input
+                type="date"
+                id="date"
+                name="date"
+                class="w-full rounded-lg border border-navy-950/15 bg-white px-4 py-3 font-body text-sm text-navy-950 outline-none transition-colors focus:border-ocean-600"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label for="message" class="mb-1.5 block font-body text-sm font-bold text-navy-950">Message</label>
+            <textarea
+              id="message"
+              name="message"
+              rows="4"
+              placeholder="Party size, experience level, anything else Captain Jason should know."
+              class="w-full rounded-lg border border-navy-950/15 bg-white px-4 py-3 font-body text-sm text-navy-950 outline-none transition-colors focus:border-ocean-600"
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            class="inline-flex w-full items-center justify-center rounded-full bg-ocean-600 px-6 py-3.5 font-body text-sm font-bold text-white transition-colors hover:bg-ocean-500 sm:w-auto"
+          >
+            Send Message
+          </button>
+        </form>
+
+        <div id="contact-form-success" class="mt-8 hidden rounded-2xl bg-teal-500/10 p-6">
+          <p class="font-display text-lg font-extrabold text-navy-950">Message sent — thanks!</p>
+          <p class="mt-1 font-body text-sm text-navy-950/70">
+            Captain Jason responds personally, usually within a few hours. For a same-day
+            answer, call <a href={business.phone.href} class="font-bold text-ocean-600 hover:underline">{business.phone.display}</a>.
+          </p>
+        </div>
+      </div>
+
+      <!-- Booking sidebar -->
+      <div class="space-y-6">
+        <div class="rounded-2xl bg-navy-950 p-6 text-white sm:p-8">
+          <span class="font-body text-xs font-bold uppercase tracking-wide text-teal-400">Live Availability</span>
+          <h3 class="mt-2 font-display text-xl font-extrabold">Lock In Your Charter</h3>
+          <p class="mt-3 font-body text-sm text-white/70">
+            Pick a date on the live booking calendar to see open trip times, prices, and check
+            out securely. Captain Jason confirms your dock time the night before.
+          </p>
+          <a
+            href={business.bookingUrl}
+            class="mt-5 inline-flex w-full items-center justify-center rounded-full bg-ocean-600 px-6 py-3 font-body text-sm font-bold text-white transition-colors hover:bg-ocean-500"
+          >
+            Open Live Booking Calendar
+          </a>
+          <p class="mt-3 font-body text-xs text-white/40">
+            Booking handled by FareHarbor. Captain Jason receives every booking directly.
+          </p>
+        </div>
+
+        <div class="rounded-2xl bg-sand-100 p-6 sm:p-8">
+          <h3 class="font-display text-lg font-extrabold text-navy-950">Prefer to Call?</h3>
+          <p class="mt-2 font-body text-sm text-navy-950/70">
+            Same-day bookings move fastest by phone.
+          </p>
+          <a href={business.phone.href} class="mt-4 block font-display text-2xl font-extrabold text-ocean-600">
+            {business.phone.display}
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Map -->
+  <section class="bg-sand-100 py-section-sm sm:py-section">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
+        <div>
+          <span class="font-body text-sm font-bold uppercase tracking-wide text-teal-500">Where to Find Us</span>
+          <h2 class="mt-2 font-display text-3xl font-extrabold text-navy-950 sm:text-4xl">Our Home Dock</h2>
+          <p class="mt-2 max-w-md font-body text-sm text-navy-950/70">{business.address.full}</p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a
+            href={directionsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center rounded-full bg-navy-950 px-6 py-3 font-body text-sm font-bold text-white transition-colors hover:bg-navy-900"
+          >
+            Get Directions
+          </a>
+          <a
+            href={business.phone.href}
+            class="inline-flex items-center justify-center rounded-full border border-navy-950/20 px-6 py-3 font-body text-sm font-bold text-navy-950 transition-colors hover:bg-white"
+          >
+            Call {business.phone.display}
+          </a>
+        </div>
+      </div>
+      <div class="mt-8 overflow-hidden rounded-2xl shadow-md">
+        <iframe
+          src={mapEmbedUrl}
+          width="100%"
+          height="420"
+          style="border:0;"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title={`Map to ${business.name} at ${business.address.full}`}
+        ></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-section-sm sm:py-section">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <span class="font-body text-sm font-bold uppercase tracking-wide text-teal-500">Quick Answers</span>
+        <h2 class="mt-2 font-display text-3xl font-extrabold text-navy-950 sm:text-4xl">Before You Book</h2>
+      </div>
+      <div class="mt-8 rounded-2xl bg-sand-100 p-2 sm:p-4">
+        <FaqAccordion question="How quickly do you respond to booking requests?">
+          Captain Jason responds personally, usually within a few hours during the day. For
+          same-day bookings, call {business.phone.display} directly. Email and form submissions
+          get a reply the same day in most cases.
+        </FaqAccordion>
+        <FaqAccordion question="Can I book a same-day charter?">
+          Sometimes. If we have an open slot, yes — call to check. Same-day availability depends
+          on weather, prior bookings, and how late in the day you reach out. Locking in your date
+          a few weeks ahead is the safe bet for weekends and peak season.
+        </FaqAccordion>
+        <FaqAccordion question="What if I need to cancel or reschedule?">
+          Weather cancellations are no problem. Captain Jason makes the call based on the morning
+          forecast and reschedules with no penalty when the offshore conditions turn unsafe. For
+          other reschedules, give us 48 hours notice when possible.
+        </FaqAccordion>
+        <FaqAccordion question="Do you take cards or cash?">
+          Both, plus Venmo and Zelle. Captain Jason will discuss payment when confirming your
+          trip. A deposit is typically requested to hold the date, with final payment at the dock
+          or via app.
+        </FaqAccordion>
+        <FaqAccordion question="Where do we meet for the trip?">
+          We pick up at Cox Landing in Fort Lauderdale. Exact dock confirmed when you book. Most
+          hotels along the Fort Lauderdale beach strip, Las Olas, and the 17th Street Causeway are
+          inside a five-minute drive.
+        </FaqAccordion>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const form = document.getElementById('contact-form-el') as HTMLFormElement | null;
+  const successPanel = document.getElementById('contact-form-success');
+
+  // Mock submit — no backend wired up yet. Swaps the form for a confirmation
+  // panel so the flow feels real; replace with a real submit handler
+  // (Netlify Forms, a form endpoint, etc.) when one is available.
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    form.classList.add('hidden');
+    successPanel?.classList.remove('hidden');
+  });
+</script>

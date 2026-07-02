@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://coolrunningssportfishing.netlify.app/sitemap-index.xml

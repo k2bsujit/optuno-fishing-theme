@@ -1,0 +1,135 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BookingCta from '../components/BookingCta.astro';
+import { blogPosts } from '../data/blog';
+
+// /blog/ — fishing reports & charter guides index. Content sourced from
+// https://www.fishcoolrunnings.com/blog/ (fetched live). Cards are
+// informational only (no detail pages in this rebuild's scope — see
+// src/data/blog.ts comment).
+
+const [featured, ...rest] = blogPosts;
+const categories = [...new Set(blogPosts.map((p) => p.category))];
+---
+
+<BaseLayout
+  title="Fort Lauderdale Fishing Reports & Charter Guides | Cool Runnings Blog"
+  description="Captain Jason's Fort Lauderdale fishing reports, sportfishing charter guides, and South Florida seasonal insights. Read what's biting and how to book your trip."
+>
+  <!-- Hero -->
+  <section class="relative flex min-h-[45vh] items-end overflow-hidden bg-navy-950 text-white">
+    <img
+      src="/images/hero-blog.webp"
+      alt="Captain Jason at the wheel of the Cool Runnings 32 ft Contender on a Fort Lauderdale fishing trip"
+      width="1600"
+      height="900"
+      loading="eager"
+      class="absolute inset-0 h-full w-full object-cover opacity-60"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/50 to-navy-950/10"></div>
+    <div class="relative mx-auto w-full max-w-7xl px-4 pb-16 pt-32 sm:px-6 sm:pb-20 lg:px-8">
+      <nav aria-label="Breadcrumb" class="mb-4 flex items-center gap-1.5 font-body text-xs font-bold uppercase tracking-wide text-white/60">
+        <a href="/" class="hover:text-teal-400">Home</a>
+        <span aria-hidden="true">/</span>
+        <span class="text-white/90">Blog</span>
+      </nav>
+      <span class="inline-flex w-fit items-center rounded-full bg-teal-500 px-3 py-1 font-body text-xs font-extrabold uppercase tracking-wide text-navy-950">
+        Reports · Guides · Seasonal Picks
+      </span>
+      <h1 class="mt-4 max-w-2xl font-display text-4xl font-extrabold leading-tight sm:text-5xl">
+        Fishing Reports &amp; Guides
+      </h1>
+      <p class="mt-4 max-w-xl font-body text-base text-white/85 sm:text-lg">
+        Captain Jason's notes from the boat. Seasonal fishing tactics, packing checklists, gear
+        advice, and stories from a decade running charters out of Fort Lauderdale.
+      </p>
+    </div>
+  </section>
+
+  <!-- Intro + category chips -->
+  <section class="py-section-sm">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <p class="font-body text-base leading-relaxed text-navy-950/75">
+        The Cool Runnings blog is where Captain Jason posts charter guides, seasonal fishing
+        reports, and the kind of dock-side advice that turns a first-time angler into a repeat
+        guest. Newest posts run at the top.
+      </p>
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-2">
+        {
+          categories.map((cat) => (
+            <span class="rounded-full bg-sand-100 px-4 py-1.5 font-body text-xs font-bold uppercase tracking-wide text-navy-950/70">
+              {cat}
+            </span>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured post -->
+  <section class="pb-section-sm">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 overflow-hidden rounded-3xl bg-navy-950 shadow-lg lg:grid-cols-2">
+        <img
+          src={featured.image}
+          alt={featured.imageAlt}
+          width="800"
+          height="600"
+          loading="lazy"
+          class="h-64 w-full object-cover lg:h-full"
+        />
+        <div class="flex flex-col justify-center p-8 text-white sm:p-10">
+          <div class="flex items-center gap-3 font-body text-xs font-bold uppercase tracking-wide text-teal-400">
+            <span>{featured.category}</span>
+            <span aria-hidden="true">·</span>
+            <span class="text-white/50">{featured.readTime}</span>
+          </div>
+          <h2 class="mt-3 font-display text-2xl font-extrabold leading-snug sm:text-3xl">
+            {featured.title}
+          </h2>
+          <p class="mt-2 font-body text-xs text-white/50">{featured.date}</p>
+          <p class="mt-4 font-body text-sm text-white/80">{featured.excerpt}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Post grid -->
+  <section class="pb-section-sm sm:pb-section">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          rest.map((post) => (
+            <article class="flex flex-col overflow-hidden rounded-2xl bg-sand-100 shadow-sm transition-shadow hover:shadow-md">
+              <img
+                src={post.image}
+                alt={post.imageAlt}
+                width="500"
+                height="320"
+                loading="lazy"
+                class="h-44 w-full object-cover"
+              />
+              <div class="flex flex-1 flex-col p-5">
+                <div class="flex items-center gap-2 font-body text-xs font-bold uppercase tracking-wide text-ocean-600">
+                  <span>{post.category}</span>
+                  <span aria-hidden="true" class="text-navy-950/30">·</span>
+                  <span class="text-navy-950/40">{post.readTime}</span>
+                </div>
+                <h3 class="mt-2 font-display text-base font-extrabold leading-snug text-navy-950">
+                  {post.title}
+                </h3>
+                <p class="mt-1 font-body text-xs text-navy-950/40">{post.date}</p>
+                <p class="mt-3 flex-1 font-body text-sm text-navy-950/70">{post.excerpt}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <BookingCta
+    heading="Read About It, Then Go Fish"
+    body="The blog is the warm-up. The real story happens on the boat. Lock in a charter date and find out what is biting this week."
+  />
+</BaseLayout>

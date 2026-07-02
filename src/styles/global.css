@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Fishing-charter brand voice: confident, bold type throughout. Utility
+   classes on individual elements (font-semibold, font-bold, etc.) still win
+   where set explicitly — this just raises the default weight everywhere else. */
+@layer base {
+  body {
+    font-weight: 500;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 800;
+  }
+}
+
+/* Horizontal scroll-snap carousel (reviews) */
+.snap-x-mandatory {
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.snap-x-mandatory::-webkit-scrollbar {
+  display: none;
+}
+.snap-card {
+  scroll-snap-align: start;
+}

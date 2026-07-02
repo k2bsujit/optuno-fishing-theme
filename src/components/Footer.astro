@@ -1,0 +1,142 @@
+---
+import { business, nav, assets, socialIcons } from '../data/site';
+
+const year = new Date().getFullYear();
+
+// Full site nav, filtered by `enabled` — every live page's footer column
+// stays in sync with Header/MobileMenu automatically.
+//
+// Structural note: this is a deliberately different shape from the
+// reference site's plain 4-column footer. Contact details live in a
+// full-width top band instead of a narrow grid column (fixes a real
+// overflow bug where the long unbroken email string spilled into the next
+// column when squeezed into a 1/6-width cell). "About Us" is folded into
+// the "Cool Runnings" group (rather than getting its own column) so the
+// whole sitemap sits in a single row of four groups instead of wrapping.
+const visibleNav = nav
+  .map((item) => ({
+    ...item,
+    children: item.children?.filter((child) => child.enabled),
+  }))
+  .filter((item) => item.enabled || (item.children && item.children.length > 0));
+
+const aboutUs = visibleNav.find((item) => item.label === 'About Us');
+const standaloneLinks = visibleNav.filter((item) => !item.children || item.children.length === 0);
+const companyLinks = [
+  { label: 'Home', href: '/' },
+  ...(aboutUs?.children ?? []),
+  ...standaloneLinks,
+];
+const navColumns = visibleNav.filter(
+  (item) => item.children && item.children.length > 0 && item.label !== 'About Us'
+);
+---
+
+<footer class="bg-navy-950 text-white">
+  <!-- Top band: brand + contact + CTA, full width so nothing gets squeezed -->
+  <div class="border-b border-white/10">
+    <div class="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-10 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+      <div class="flex items-center gap-4">
+        <a href="/" class="flex-shrink-0" aria-label={`${business.name} — home`}>
+          <img src={assets.logo} alt={business.name} width="160" height="42" class="h-10 w-auto" />
+        </a>
+        <div class="min-w-0 border-l border-white/10 pl-4">
+          <p class="font-body text-sm text-white/70">{business.address.full}</p>
+          <div class="mt-1 flex flex-wrap gap-x-4 gap-y-1">
+            <a href={business.phone.href} class="font-body text-sm font-bold text-white/90 hover:text-teal-400">
+              {business.phone.display}
+            </a>
+            <a href={`mailto:${business.email}`} class="break-all font-body text-sm text-white/70 hover:text-teal-400">
+              {business.email}
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-4">
+        <div class="flex gap-2">
+          {
+            socialIcons.map((social) => (
+              <a
+                href={social.href}
+                aria-label={social.label}
+                title={social.label}
+                rel="noopener noreferrer"
+                target="_blank"
+                class="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/80 transition-colors hover:bg-teal-500 hover:text-navy-950"
+              >
+                <svg viewBox="0 0 16 16" class="h-4 w-4 fill-current" aria-hidden="true">
+                  <path d={social.icon} />
+                </svg>
+              </a>
+            ))
+          }
+        </div>
+        <a
+          href={business.bookingUrl}
+          class="inline-flex items-center justify-center rounded-full bg-ocean-600 px-5 py-2.5 font-body text-sm font-bold text-white transition-colors hover:bg-ocean-500"
+        >
+          Book A Charter
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sitemap: four groups, one row on sm+. Headings use a short underline
+       instead of a full-height rule so nothing reads as a literal column
+       divider. -->
+  <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4">
+      <div class="min-w-0">
+        <h3 class="inline-block border-b-2 border-teal-500 pb-1.5 font-display text-xs font-extrabold uppercase tracking-widest text-white">
+          Cool Runnings
+        </h3>
+        <ul class="mt-4 space-y-2">
+          {
+            companyLinks.map((item) => (
+              <li>
+                <a href={item.href} class="font-body text-sm text-white/70 hover:text-teal-400">
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      {
+        navColumns.map((item) => (
+          <div class="min-w-0">
+            <h3 class="inline-block border-b-2 border-teal-500 pb-1.5 font-display text-xs font-extrabold uppercase tracking-widest text-white">
+              <a href={item.href} class="hover:text-teal-400">{item.label}</a>
+            </h3>
+            <ul class="mt-4 space-y-2">
+              {item.children!.map((child) => (
+                <li>
+                  <a href={child.href} class="font-body text-sm text-white/70 hover:text-teal-400">
+                    {child.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+
+      <div class="min-w-0">
+        <h3 class="inline-block border-b-2 border-teal-500 pb-1.5 font-display text-xs font-extrabold uppercase tracking-widest text-white">
+          Hours
+        </h3>
+        <p class="mt-4 font-body text-sm text-white/70">{business.hours.days}</p>
+        <p class="font-body text-sm text-white/70">{business.hours.time}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="border-t border-white/10">
+    <div class="mx-auto max-w-7xl px-4 py-6 text-center font-body text-xs text-white/50 sm:px-6 lg:px-8">
+      © {year} {business.name}. All rights reserved.
+    </div>
+  </div>
+</footer>

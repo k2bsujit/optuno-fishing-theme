@@ -1,0 +1,222 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BookingCta from '../components/BookingCta.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
+import { business } from '../data/site';
+
+// /charter-info/ — what's included, what to pack, trip lengths, pricing, FAQ.
+// Content sourced from https://www.fishcoolrunnings.com/charter-info/ (fetched
+// live), restructured into a modern icon-grid + tabbed-length layout.
+
+const included = [
+  { title: 'Rods, reels & tackle', body: "Conventional, spinning, and kite gear matched to the day's target species and depth." },
+  { title: 'Bait & lures', body: 'Fresh live and dead bait selected at the dock that morning. Trolling spread, jigs, and rigs ready to go.' },
+  { title: 'Florida fishing licenses', body: "Your party is covered under the captain's saltwater charter license. No license run to the bait shop required." },
+  { title: 'Ice & coolers', body: 'Iced coolers on board to keep every keeper cold from rail to ride home.' },
+  { title: 'USCG safety gear', body: 'Coast Guard life jackets, flares, radios, GPS, and a fully stocked first aid kit.' },
+  { title: 'Catch cleaning at the dock', body: 'Every keeper cleaned, filleted, and bagged for you at the end of the trip.' },
+];
+
+const toPack = [
+  { title: 'Sun protection', body: 'Reef-safe sunscreen (SPF 30+), wide-brim hat, polarized sunglasses on a strap, and a long-sleeve UPF sun shirt.' },
+  { title: 'Soft-soled shoes', body: 'Closed-toe deck shoes, boat sneakers, or sandals with heel straps. No flip-flops — they slide on a wet deck.' },
+  { title: 'Food & drinks', body: 'Sandwiches, fruit, jerky, granola bars, plenty of water. Beer and cocktails allowed in moderation.' },
+  { title: 'Motion sickness meds', body: 'If you are prone, take Bonine or non-drowsy Dramamine one hour before departure, not at the dock.' },
+  { title: 'Camera or phone', body: 'A waterproof case or dry bag is smart. Some of the best fish photos happen in the first ten minutes of the bite.' },
+  { title: 'Light jacket', body: 'Even South Florida mornings can be cool at 30 knots running offshore. Layer up for the pre-dawn run.' },
+];
+
+const tripLengths = [
+  { duration: '~4 hours', title: 'Half-Day', body: 'The most popular slot. Great for inshore action, reef trips, and quick offshore runs when the sailfish or mahi bite is close in. Best for kids, beginners, and groups on a tight schedule.' },
+  { duration: '~6 hours', title: 'Three-Quarter Day', body: "The flexible middle option. Hit shallow reef and the deeper wrecks on the same trip, or work a longer offshore pattern for sailfish, mahi, and tuna. Often the captain's pick." },
+  { duration: '~8 hours', title: 'Full Day', body: 'Serious offshore chasing, multi-species days, deep-drop bottom trips, and the best shot at a billfish or trophy fish. Pre-dawn departure for the dawn bite.' },
+];
+
+const faqs = [
+  {
+    q: 'How far in advance should I book a charter?',
+    a: 'Two to four weeks ahead is the safe window for weekends and peak season. Same-day and next-day bookings happen when we have an open slot, especially on weekdays. Call the number above to check availability for your dates, or use the contact form to send a request.',
+  },
+  {
+    q: 'Where do we meet for the trip?',
+    a: 'Pickup is at Cox Landing in Fort Lauderdale. The exact dock and time are confirmed when you book. Most hotels along the beach strip, Las Olas, and the 17th Street Causeway are inside a five-minute drive. Captain Jason also runs trips for guests staying in Pompano Beach, Hollywood, and Dania Beach.',
+  },
+  {
+    q: 'What happens if the weather is bad on my trip day?',
+    a: 'Safety calls always come from the captain. If the offshore forecast turns dangerous, we reschedule with no penalty. Fort Lauderdale conditions can change quickly, especially in winter with strong north winds against the Gulf Stream. If conditions are marginal but workable, we may switch from a long offshore run to a shorter reef trip or an inshore day inside the Intracoastal.',
+  },
+  {
+    q: 'Is there a deposit required to book?',
+    a: 'Yes. A booking deposit holds your date. The balance is due the morning of the trip in cash or card at the dock. Call for the current deposit amount and cancellation policy. Reschedules for weather are at no charge.',
+  },
+  {
+    q: 'Can I bring kids on the charter?',
+    a: "Yes. Kids do great on Cool Runnings trips, especially on inshore charters in the calm Intracoastal water. Half-day trips work best for younger anglers. Mention every child's age when you book so Captain Jason can match the trip plan to the group. Coast Guard regulations require life jackets in sizes for every child on board, which we carry.",
+  },
+  {
+    q: 'Can I keep what I catch?',
+    a: 'Most keeper species can come home with you, cleaned and bagged at the dock. Bottom fishing trips typically produce coolers of snapper and grouper fillets. Sailfish, tarpon, and certain other species are catch and release under Florida regulations. Captain Jason explains which species are which on the water and handles every release carefully.',
+  },
+  {
+    q: 'Is alcohol allowed on board?',
+    a: 'Yes. Beer, wine, and cocktails are allowed in moderation. Drink responsibly and stay hydrated with water in between. Sun, salt air, and alcohol amplify everything, so good trips can become regrettable ones if you push it. No glass containers please.',
+  },
+  {
+    q: 'Do you offer a discount for repeat customers?',
+    a: 'Yes. Cool Runnings offers a discount on your third trip booking as a thank-you to our regulars. Many of our families and tournament-curious anglers book the same week every year. Mention you are a repeat guest when you book and Captain Jason will apply the discount.',
+  },
+];
+---
+
+<BaseLayout
+  title="Charter Info | What's Included, What to Bring, How to Book"
+  description="Everything you need to know about booking a fishing charter with Cool Runnings: what's included, what to bring, trip lengths, and how to book."
+>
+  <!-- Hero -->
+  <section class="relative flex min-h-[45vh] items-end overflow-hidden bg-navy-950 text-white">
+    <img
+      src="/images/hero-charter-info.webp"
+      alt="Tackle and gear loaded on the Cool Runnings boat before a Fort Lauderdale fishing charter"
+      width="1600"
+      height="900"
+      loading="eager"
+      class="absolute inset-0 h-full w-full object-cover opacity-60"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/50 to-navy-950/10"></div>
+    <div class="relative mx-auto w-full max-w-7xl px-4 pb-16 pt-32 sm:px-6 sm:pb-20 lg:px-8">
+      <nav aria-label="Breadcrumb" class="mb-4 flex items-center gap-1.5 font-body text-xs font-bold uppercase tracking-wide text-white/60">
+        <a href="/" class="hover:text-teal-400">Home</a>
+        <span aria-hidden="true">/</span>
+        <span class="text-white/90">Charter Info</span>
+      </nav>
+      <span class="inline-flex w-fit items-center rounded-full bg-teal-500 px-3 py-1 font-body text-xs font-extrabold uppercase tracking-wide text-navy-950">
+        Before You Step On The Boat
+      </span>
+      <h1 class="mt-4 max-w-2xl font-display text-4xl font-extrabold leading-tight sm:text-5xl">
+        Charter Info
+      </h1>
+      <p class="mt-4 max-w-xl font-body text-base text-white/85 sm:text-lg">
+        What is included, what to bring, how trips are structured, and how to lock in a date.
+        Everything you need to know to roll into the marina ready to fish.
+      </p>
+    </div>
+  </section>
+
+  <!-- What's included -->
+  <section class="py-section-sm sm:py-section">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <span class="font-body text-sm font-bold uppercase tracking-wide text-teal-500">We Bring</span>
+        <h2 class="mt-2 font-display text-3xl font-extrabold text-navy-950 sm:text-4xl">
+          What's Included on Every Trip
+        </h2>
+        <p class="mx-auto mt-3 max-w-xl font-body text-sm text-navy-950/60">
+          The boat shows up loaded. Your job is to show up with sun protection and a smile.
+        </p>
+      </div>
+      <div class="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          included.map((item) => (
+            <div class="rounded-2xl bg-sand-100 p-6">
+              <svg class="h-6 w-6 text-ocean-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M16.7 5.3a1 1 0 0 1 0 1.4l-7 7a1 1 0 0 1-1.4 0l-3-3a1 1 0 1 1 1.4-1.4l2.3 2.3 6.3-6.3a1 1 0 0 1 1.4 0Z" clip-rule="evenodd" />
+              </svg>
+              <h3 class="mt-3 font-display text-base font-extrabold text-navy-950">{item.title}</h3>
+              <p class="mt-1 font-body text-sm text-navy-950/70">{item.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- What to pack -->
+  <section class="bg-navy-950 py-section-sm text-white sm:py-section">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <span class="font-body text-sm font-bold uppercase tracking-wide text-teal-400">You Bring</span>
+        <h2 class="mt-2 font-display text-3xl font-extrabold sm:text-4xl">What to Pack</h2>
+        <p class="mx-auto mt-3 max-w-xl font-body text-sm text-white/60">
+          Short list. Pack the night before. Set it by the door so you can roll into the marina
+          without a scramble.
+        </p>
+      </div>
+      <div class="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          toPack.map((item) => (
+            <div class="rounded-2xl bg-white/5 p-6">
+              <h3 class="font-display text-base font-extrabold text-teal-400">{item.title}</h3>
+              <p class="mt-1 font-body text-sm text-white/70">{item.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Trip lengths -->
+  <section class="py-section-sm sm:py-section">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <span class="font-body text-sm font-bold uppercase tracking-wide text-teal-500">Pick Your Slot</span>
+        <h2 class="mt-2 font-display text-3xl font-extrabold text-navy-950 sm:text-4xl">
+          Trip Length Options
+        </h2>
+      </div>
+      <div class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
+        {
+          tripLengths.map((trip) => (
+            <div class="rounded-2xl bg-sand-100 p-8 text-center">
+              <p class="font-display text-sm font-extrabold uppercase tracking-wide text-ocean-600">{trip.duration}</p>
+              <h3 class="mt-2 font-display text-xl font-extrabold text-navy-950">{trip.title}</h3>
+              <p class="mt-3 font-body text-sm text-navy-950/70">{trip.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Capacity + pricing -->
+  <section class="bg-sand-100 py-section-sm sm:py-section">
+    <div class="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
+      <div class="rounded-2xl bg-white p-8 shadow-sm">
+        <h3 class="font-display text-xl font-extrabold text-navy-950">Boat Capacity</h3>
+        <p class="mt-3 font-body text-sm leading-relaxed text-navy-950/70">
+          Cool Runnings is a private charter only. Maximum four anglers on the boat, with two to
+          three the sweet spot for full rod time when the bite turns on. The 32 ft Contender has a
+          wide, dry cockpit, a comfortable cabin, and an enclosed head for longer trips. Groups
+          bigger than four should reach out about logistics options.
+        </p>
+      </div>
+      <div class="rounded-2xl bg-white p-8 shadow-sm">
+        <h3 class="font-display text-xl font-extrabold text-navy-950">Pricing</h3>
+        <p class="mt-3 font-body text-sm leading-relaxed text-navy-950/70">
+          Trip pricing varies by season, party size, and trip length. Call {business.phone.display}
+          {' '}or use the booking form for current rates. Ask about our discount on your third trip
+          booking. Standard captain's tip is fifteen to twenty percent in cash at the end of the
+          trip.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-section-sm sm:py-section">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-center font-display text-3xl font-extrabold text-navy-950 sm:text-4xl">
+        Booking &amp; Trip FAQs
+      </h2>
+      <div class="mt-8 rounded-2xl bg-sand-100 p-2 sm:p-4">
+        {
+          faqs.map((faq) => <FaqAccordion question={faq.q}>{faq.a}</FaqAccordion>)
+        }
+      </div>
+    </div>
+  </section>
+
+  <BookingCta
+    heading="Ready to Book?"
+    body="Half-day, three-quarter, and full-day trips are open. Captain Jason responds personally, usually within a few hours."
+  />
+</BaseLayout>

@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ServiceDetailLayout from '../../components/ServiceDetailLayout.astro';
+import { services } from '../../data/services';
+
+const service = services.find((s) => s.slug === 'inshore-fishing')!;
+---
+
+<BaseLayout title={service.metaTitle} description={service.metaDescription}>
+  <ServiceDetailLayout service={service} />
+</BaseLayout>
