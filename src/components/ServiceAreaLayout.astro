@@ -23,6 +23,8 @@ const nearbyAreas = area.nearby
     width="1600"
     height="900"
     loading="eager"
+    fetchpriority="high"
+    decoding="async"
     class="absolute inset-0 h-full w-full object-cover opacity-60"
   />
   <div class="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/50 to-navy-950/10"></div>
@@ -104,6 +106,7 @@ const nearbyAreas = area.nearby
               width="1000"
               height="600"
               loading="lazy"
+              decoding="async"
               class="my-8 aspect-video w-full rounded-2xl object-cover"
             />
           )}
@@ -144,6 +147,7 @@ const nearbyAreas = area.nearby
       width="700"
       height="560"
       loading="lazy"
+      decoding="async"
       class="aspect-[5/4] w-full rounded-2xl object-cover shadow-md lg:order-2"
     />
     <div class="lg:order-1">
@@ -228,6 +232,7 @@ const nearbyAreas = area.nearby
               width="500"
               height="360"
               loading="lazy"
+              decoding="async"
               class="absolute inset-0 h-full w-full object-cover opacity-70 transition-transform duration-500 group-hover:scale-110"
             />
             <div class="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/50 to-transparent" />

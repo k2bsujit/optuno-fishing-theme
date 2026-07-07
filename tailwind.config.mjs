@@ -26,8 +26,8 @@ export default {
         },
       },
       fontFamily: {
-        display: ['"Montserrat"', 'sans-serif'],
-        body: ['"Inter"', 'sans-serif'],
+        display: ['system-ui', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'sans-serif'],
+        body: ['system-ui', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'sans-serif'],
       },
       spacing: {
         section: '5rem', // 80px desktop section rhythm
